@@ -84,12 +84,12 @@ export default function ({
               }}
               size="h3"
             >
-              Login
+              UTFPR
             </Text>
-            <Text>Email</Text>
+            <Text>E-mail</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
+              placeholder="@utfpr.edu.br"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -98,10 +98,9 @@ export default function ({
               onChangeText={(text) => setEmail(text)}
             />
 
-            <Text style={{ marginTop: 15 }}>Password</Text>
+            <Text style={{ marginTop: 15 }}>Senha</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your password"
               value={password}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -110,7 +109,7 @@ export default function ({
               onChangeText={(text) => setPassword(text)}
             />
             <Button
-              text={loading ? "Loading" : "Continue"}
+              text={loading ? "Loading" : "Entrar"}
               onPress={() => {
                 login();
               }}
@@ -128,7 +127,7 @@ export default function ({
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Don't have an account?</Text>
+              <Text size="md">Criar uma nova conta!</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Register");
@@ -141,7 +140,7 @@ export default function ({
                     marginLeft: 5,
                   }}
                 >
-                  Register here
+                  Registrar aqui
                 </Text>
               </TouchableOpacity>
             </View>
@@ -159,7 +158,7 @@ export default function ({
                 }}
               >
                 <Text size="md" fontWeight="bold">
-                  Forget password
+                  Esqueceu a senha
                 </Text>
               </TouchableOpacity>
             </View>
@@ -171,21 +170,6 @@ export default function ({
                 justifyContent: "center",
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  isDarkmode ? setTheme("light") : setTheme("dark");
-                }}
-              >
-                <Text
-                  size="md"
-                  fontWeight="bold"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
