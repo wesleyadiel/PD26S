@@ -79,12 +79,11 @@ export default function ({ navigation }) {
                 padding: 30,
               }}
             >
-              Forget Password
+              Esqueceu a senha?
             </Text>
             <Text>Email</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -93,7 +92,7 @@ export default function ({ navigation }) {
               onChangeText={(text) => setEmail(text)}
             />
             <Button
-              text={loading ? "Loading" : "Send email"}
+              text={loading ? "Loading" : "Enviar e-mail!"}
               onPress={() => {
                 forget();
               }}
@@ -111,7 +110,7 @@ export default function ({ navigation }) {
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Already have an account?</Text>
+  
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Login");
@@ -124,34 +123,11 @@ export default function ({ navigation }) {
                     marginLeft: 5,
                   }}
                 >
-                  Login here
+                  Clique aqui para logar
                 </Text>
               </TouchableOpacity>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 30,
-                justifyContent: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  isDarkmode ? setTheme("light") : setTheme("dark");
-                }}
-              >
-                <Text
-                  size="md"
-                  fontWeight="bold"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+        
           </View>
         </ScrollView>
       </Layout>
