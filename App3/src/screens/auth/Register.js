@@ -80,12 +80,11 @@ export default function ({ navigation }) {
                 padding: 30,
               }}
             >
-              Register
+              REGISTRAR
             </Text>
             <Text>Email</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -94,10 +93,9 @@ export default function ({ navigation }) {
               onChangeText={(text) => setEmail(text)}
             />
 
-            <Text style={{ marginTop: 15 }}>Password</Text>
+            <Text style={{ marginTop: 15 }}>Senha</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your password"
               value={password}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -106,7 +104,7 @@ export default function ({ navigation }) {
               onChangeText={(text) => setPassword(text)}
             />
             <Button
-              text={loading ? "Loading" : "Create an account"}
+              text={loading ? "Loading" : "Criar a conta!"}
               onPress={() => {
                 register();
               }}
@@ -124,7 +122,7 @@ export default function ({ navigation }) {
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Already have an account?</Text>
+              <Text size="md">Deseja criar uma nova conta?</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Login");
@@ -137,31 +135,7 @@ export default function ({ navigation }) {
                     marginLeft: 5,
                   }}
                 >
-                  Login here
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 30,
-                justifyContent: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  isDarkmode ? setTheme("light") : setTheme("dark");
-                }}
-              >
-                <Text
-                  size="md"
-                  fontWeight="bold"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
+                  ENTRE
                 </Text>
               </TouchableOpacity>
             </View>
