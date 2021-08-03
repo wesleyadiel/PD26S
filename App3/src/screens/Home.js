@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Linking } from "react-native";
+import { View, Linking, Image } from "react-native";
 import * as firebase from "firebase";
 import {
   Layout,
@@ -43,14 +43,21 @@ export default function ({ navigation }) {
       >
         <Section style={{ marginTop: 20 }}>
           <SectionContent>
-            <Text fontWeight="bold" style={{ textAlign: "center" }}>
-              These UI components provided by Rapi UI
-            </Text>
+          <Image
+              resizeMode="contain"
+              style={{
+                alignContent:"center",
+                height: 220,
+                width: 320,
+              }}
+              source={require("../../assets/utfpr_logo.png")}
+            />
             <Button
               style={{ marginTop: 10 }}
-              text="Rapi UI Documentation"
-              status="info"
-              onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
+              text="Itens"
+              onPress={() => { 
+                navigation.navigate("ItensScreen");
+               }}
             />
             <Button
               text="Go to second screen"
