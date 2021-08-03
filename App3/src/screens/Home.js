@@ -60,9 +60,9 @@ export default function ({ navigation }) {
                }}
             />
             <Button
-              text="Go to second screen"
+              text="Inutilizar Item"
               onPress={() => {
-                navigation.navigate("SecondScreen");
+                navigation.navigate("InutilizarItemScreen");
               }}
               style={{
                 marginTop: 10,
