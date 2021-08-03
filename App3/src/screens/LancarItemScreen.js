@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 			/>
 
 			<Button
-				style={{ margin: 10, marginTop: -10, 
+				style={{ margin: 10, marginTop: -10, marginBottom: 15,
 					justifyContent: "end" }}
 				text="Ler QRCode"
 				type="outline"

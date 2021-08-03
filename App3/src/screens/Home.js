@@ -41,7 +41,7 @@ export default function ({ navigation }) {
           justifyContent: "center",
         }}
       >
-        <Section style={{ marginTop: 20 }}>
+        <Section style={{ marginTop: 5 }}>
           <SectionContent>
           <Image
               resizeMode="contain"
@@ -52,8 +52,15 @@ export default function ({ navigation }) {
               }}
               source={require("../../assets/utfpr_logo.png")}
             />
+              <View
+				        style={{
+					        alignItems: 'center',
+				        }}
+			        >
+				      <Text>Gerenciamento de patrimônio</Text>
+			        </View>
             <Button
-              style={{ marginTop: 10 }}
+              style={{ marginTop: 5 }}
               text="Itens"
               onPress={() => { 
                 navigation.navigate("ItensScreen");
@@ -68,6 +75,7 @@ export default function ({ navigation }) {
                 marginTop: 10,
               }}
             />
+          
             <Button
               text="Lançar Item"
               onPress={() => {
@@ -88,7 +96,7 @@ export default function ({ navigation }) {
             />
             <Button
               status="danger"
-              text="Logout"
+              text="Sair"
               onPress={() => {
                 firebase.auth().signOut();
               }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Linking, Image, FlatList, StyleSheet, Text, Alert } from "react-native";
+import { View, Linking, Image, FlatList, StyleSheet, Text, Alert} from "react-native";
 import * as firebase from "firebase";
 import {
   Layout,
@@ -8,9 +8,10 @@ import {
   Section,
   SectionContent,
   useTheme,
-  themeColor, TextInput
+  themeColor, TextInput, Picker
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,9 +38,15 @@ const styles = StyleSheet.create({
 	alert("Item salvo");
   }
 
+
+
   export default function ({ route, navigation }) {
 	const { codigo, descricao } = route.params;
+
 	const { isDarkmode, setTheme } = useTheme();
+
+
+
 	return (
 		<Layout>
 		<TopNav
@@ -72,6 +79,26 @@ const styles = StyleSheet.create({
 				<View style={styles.field}>
 					<Text>Código</Text>
 					<TextInput editable={false}>{codigo}</TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Marca</Text>
+					<TextInput disabled>{descricao}</TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Nº De Serie</Text>
+					<TextInput disabled>{descricao}</TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Data da compra</Text>
+					<TextInput disabled>{descricao}</TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Data final da garantia</Text>
+					<TextInput disabled>{descricao}</TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Setor</Text>
+					<TextInput disabled>{descricao}</TextInput>
 				</View>
 				<View style={styles.field}>
 					<Text>Descrição</Text>
