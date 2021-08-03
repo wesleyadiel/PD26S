@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 			  color={isDarkmode ? themeColor.white100 : themeColor.dark}
 			  onPress={() => { navigation.pop() }}
 			/>}
-		  middleContent="Inutilização"
+		  middleContent="Lançamento"
 		  rightContent={
 			<Ionicons
 			  name={isDarkmode ? "sunny" : "moon"}

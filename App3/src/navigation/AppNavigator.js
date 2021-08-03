@@ -17,6 +17,8 @@ import Loading from "../screens/utils/Loading";
 import ItensScreen from "../screens/ItensScreen";
 import CadastrarItemScreen from "../screens/CadastrarItemScreen";
 import InutilizarItemScreen from "../screens/InutilizarItemScreen";
+import LancarItemScreen from "../screens/LancarItemScreen";
+import EstoqueItemScreen from "../screens/EstoqueItemScreen";
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {
@@ -62,6 +64,8 @@ const Main = () => {
       <MainStack.Screen name="ItensScreen" component={ItensScreen} />
       <MainStack.Screen name="CadastrarItemScreen" component={CadastrarItemScreen} />
       <MainStack.Screen name="InutilizarItemScreen" component={InutilizarItemScreen} />
+      <MainStack.Screen name="LancarItemScreen" component={LancarItemScreen} />
+      <AuthStack.Screen name="EstoqueItemScreen" component={EstoqueItemScreen} />
     </MainStack.Navigator>
   );
 };

@@ -69,6 +69,24 @@ export default function ({ navigation }) {
               }}
             />
             <Button
+              text="Lançar Item"
+              onPress={() => {
+                navigation.navigate("LancarItemScreen");
+              }}
+              style={{
+                marginTop: 10,
+              }}
+            />
+            <Button
+              text="Estoque"
+              onPress={() => {
+                navigation.navigate("EstoqueItemScreen");
+              }}
+              style={{
+                marginTop: 10,
+              }}
+            />
+            <Button
               status="danger"
               text="Logout"
               onPress={() => {
