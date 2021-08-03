@@ -13,7 +13,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 const styles = StyleSheet.create({
 	container: {
 	 flex: 1,
@@ -24,23 +23,30 @@ const styles = StyleSheet.create({
 	 flex: 1,
 	},
 	field: {
-	  margin: 10,
 	  fontSize: 22,
 	  height: 44,
 	  borderBottomWidth: 1,
 	  marginLeft: 10,
 	  marginRight: 10,
 	  textAlign: 'left',
+	  marginBottom:40
 	}
   });
   
-  async function salvar()
-  {
-	alert("Item salvo");
-  }
-
   export default function ({ navigation }) {
+	const { codigo , descricao } = "";
 	const { isDarkmode, setTheme } = useTheme();
+	
+	async function buscarItem()
+	{
+		alert("Buscando item...");
+	}
+
+	async function abrirCamera()
+	{
+		alert("Abrindo camera...");
+	}
+
 	return (
 		<Layout>
 		<TopNav
@@ -80,12 +86,21 @@ const styles = StyleSheet.create({
 				source={require("../../assets/scan_qrcode.png")}/>
 			</View>
 			
+			<View style={styles.field}>
+				<Text>Código do Item</Text>
+				<TextInput value={codigo}></TextInput>
+			</View>
+
 			<View>
 			<Button
 				style={{ margin: 10, marginTop: -10, marginBottom: 15,
 					justifyContent: "end" }}
-				text="Digitar código"
+				text="Buscar item"
 				type="outline"
+				onPress = {() => {
+						buscarItem();
+					}
+				}
 			/>
 
 			<Button
@@ -93,6 +108,10 @@ const styles = StyleSheet.create({
 					justifyContent: "end" }}
 				text="Ler QRCode"
 				type="outline"
+				onPress = {() => {
+						abrirCamera();
+					}
+				}
 			/>
 			</View>
 		</Layout>
