@@ -7,9 +7,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
-import { supabase } from "../../initSupabase";
-import { AuthStackParamList } from "../../types/navigation";
-import { StackScreenProps } from "@react-navigation/stack";
+import * as firebase from "firebase";
 
 import {
   Layout,
@@ -20,29 +18,27 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 
-export default function ({
-  navigation,
-}: StackScreenProps<AuthStackParamList, "Login">) {
+export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function login() {
     setLoading(true);
-    const { user, error } = await supabase.auth.signIn({
-      email: email,
-      password: password,
-    });
-    if (!error && !user) {
-      setLoading(false);
-      alert("Fav");
-    }
-    if (error) {
-      setLoading(false);
-      alert(error.message);
-    }
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        setLoading(false);
+        alert(errorMessage);
+      });
   }
+
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
@@ -65,7 +61,7 @@ export default function ({
                 height: 220,
                 width: 220,
               }}
-              source={require("../../../assets/images/login.png")}
+              source={require("../../../assets/login.png")}
             />
           </View>
           <View
@@ -84,12 +80,12 @@ export default function ({
               }}
               size="h3"
             >
-              UTFPR teste
+              Login
             </Text>
-            <Text>E-mail</Text>
+            <Text>Email</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="@utfpr.edu.br"
+              placeholder="Enter your email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -98,9 +94,10 @@ export default function ({
               onChangeText={(text) => setEmail(text)}
             />
 
-            <Text style={{ marginTop: 15 }}>Senha</Text>
+            <Text style={{ marginTop: 15 }}>Password</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
+              placeholder="Enter your password"
               value={password}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -109,7 +106,7 @@ export default function ({
               onChangeText={(text) => setPassword(text)}
             />
             <Button
-              text={loading ? "Loading" : "Entrar"}
+              text={loading ? "Loading" : "Continue"}
               onPress={() => {
                 login();
               }}
@@ -127,7 +124,7 @@ export default function ({
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Criar uma nova conta!</Text>
+              <Text size="md">Don't have an account?</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Register");
@@ -140,7 +137,7 @@ export default function ({
                     marginLeft: 5,
                   }}
                 >
-                  Registrar aqui
+                  Register here
                 </Text>
               </TouchableOpacity>
             </View>
@@ -158,7 +155,7 @@ export default function ({
                 }}
               >
                 <Text size="md" fontWeight="bold">
-                  Esqueceu a senha
+                  Forget password
                 </Text>
               </TouchableOpacity>
             </View>
@@ -170,6 +167,21 @@ export default function ({
                 justifyContent: "center",
               }}
             >
+              <TouchableOpacity
+                onPress={() => {
+                  isDarkmode ? setTheme("light") : setTheme("dark");
+                }}
+              >
+                <Text
+                  size="md"
+                  fontWeight="bold"
+                  style={{
+                    marginLeft: 5,
+                  }}
+                >
+                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
