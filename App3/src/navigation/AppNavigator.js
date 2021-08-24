@@ -30,8 +30,9 @@ const firebaseConfig = {
   messagingSenderId: "155275931636",
   appId: "1:155275931636:web:c661f0f5af61c49c9c13a1",
 };
+
 if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
+  app = firebase.initializeApp(firebaseConfig);
 }
 
 const AuthStack = createStackNavigator();
