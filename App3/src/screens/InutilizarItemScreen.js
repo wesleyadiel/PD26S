@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { View, Linking, Image, FlatList, StyleSheet, Text, Alert } from "react-native";
 import * as firebase from "firebase";
 import {
@@ -37,17 +37,69 @@ const styles = StyleSheet.create({
 
   export default function ({ navigation })
   {
-	const { codigo , descricao } = "";
 	const { isDarkmode, setTheme } = useTheme();
+	const [codigo, setCodigo] = useState(0);
+	const [descricao, setDescricao] = useState('Carregando...');
+	const [keyParam, setKeyParam] = useState(0);
+	const [qtdEstoque, setQtdEstoque] = useState(0);
 
 	async function buscarItem()
 	{
-		alert("Buscando item...");
+		const fetchData = async () => {
+			let itens = await firebase.database().ref('item');
+			let encontrou = false;
+			await itens.once('value', (snapshot) => {
+				snapshot.forEach((childSnapshot) => {
+					var childKey = childSnapshot.key;
+					var childData = childSnapshot.val();
+					console.log(childData);
+					if(parseInt(childData.codigo) == parseInt(codigo) && !encontrou)
+					{
+						setKeyParam(childKey);
+						setDescricao(childData.descricao);
+						console.log(childData.qtdEstoque);
+						setQtdEstoque(childData.qtdEstoque)
+						encontrou = true;
+						console.log('acho');
+					}
+				});
+			});
+
+			if (encontrou)
+			{
+				alert('Item encontrado!');
+			}
+			else
+			{
+				alert('Item não encontrado!');
+			}
+		};
+
+		fetchData();
 	}
 
 	async function abrirCamera()
 	{
 		alert("Abrindo camera...");
+	}
+	
+	async function inutilizar()
+	{
+		if(!keyParam)
+		{
+			alert("Item não informado!");
+			return;
+		}
+		
+		const saldoAtualizado = (parseInt(qtdEstoque) - 1);
+		const fetchData = async () => {
+			let itens = await firebase.database().ref('item');
+			firebase.database().ref().child(`/item/${keyParam}`).update({
+				qtdEstoque: saldoAtualizado
+			});
+		};
+
+		fetchData();
 	}
 
 	return (
@@ -89,20 +141,13 @@ const styles = StyleSheet.create({
 				source={require("../../assets/scan_qrcode.png")}/>
 				
 			</View>
-			<Button
-				style={{ margin: 10, marginTop: -10, marginBottom: 15,
-					justifyContent: "end" }}
-				text="Ler QRCode / Código de Barra"
-				type="outline"
-				onPress = {() => {
-						abrirCamera();
-					}
-				}
-			/>
 
-				<View style={styles.field}>
+			<View style={styles.field}>
 					<Text>Código do Item: </Text>
-					<TextInput value={codigo}></TextInput>
+					<TextInput onChangeText={(texto) => setCodigo(texto)} value={codigo}></TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Nome: {descricao}</Text>
 				</View>
 			
 			<View>
@@ -111,21 +156,33 @@ const styles = StyleSheet.create({
 					justifyContent: "end" }}
 				text="Buscar item"
 				type="outline"
-				status="info"
 				onPress = {() => {
 						buscarItem();
 					}
 				}
 			/>
 
-<Button
+			
+			
+			<Button
+				style={{ margin: 10, marginTop: -10, marginBottom: 15,
+					justifyContent: "end" }}
+				text="Ler QRCode"
+				type="outline"
+				onPress = {() => {
+						abrirCamera();
+					}
+				}
+			/>		
+
+			<Button
 				style={{ margin: 10, marginTop: -10, marginBottom: 15,
 					justifyContent: "end" }}
 				text="Inutilizar Item"
 				type="outline"
 				status="warning"
 				onPress = {() => {
-						buscarItem();
+					inutilizar();
 					}
 				}
 			/>

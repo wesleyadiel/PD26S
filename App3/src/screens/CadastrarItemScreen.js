@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
 			.ref(`/item/${(keyParam ? keyParam : 0)}`)
 			.on('value', snapshot => {
 				var childData = snapshot.val();
-				console.log(keyParam);
-				console.log(childData);
 				if(childData)
 				{
 					setCodigo(childData.codigo);
@@ -72,6 +70,7 @@ const styles = StyleSheet.create({
 					setNumeroSerie(childData.numeroSerie);
 					setDtCompra(childData.dtCompra ? childData.dtCompra : new Date());
 					setDtGarantia(childData.dtGarantia ? childData.dtGarantia : new Date());
+					setqtdEstoque(childData.qtdEstoque);
 				}
 			});
 		};
