@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
 				</View>
 				<View style={styles.field}>
 					<Text>Nome: Carregando..</Text>
-					<TextInput value={codigo}></TextInput>
 				</View>
 			
 			<View>
