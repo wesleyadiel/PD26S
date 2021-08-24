@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Linking, Image, FlatList, StyleSheet, Text, Alert } from "react-native";
-import firebase from 'firebase/app';
+import React, {useState, useEffect} from "react";
+import { View, Linking, Image, FlatList, StyleSheet, Text, Alert, Switch} from "react-native";
+import * as firebase from "firebase";
 import {
   Layout,
   Button,
@@ -8,10 +8,9 @@ import {
   Section,
   SectionContent,
   useTheme,
-  themeColor, TextInput
+  themeColor, TextInput, Picker
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const styles = StyleSheet.create({
@@ -34,13 +33,37 @@ const styles = StyleSheet.create({
 	}
   });
   
-  async function salvar()
-  {
-	alert("Item salvo");
-  }
+  export default function ({ route, navigation }) {
+	const { keyParam, codigoParam, descricaoParam } = route.params;
 
-  export default function ({ navigation }) {
 	const { isDarkmode, setTheme } = useTheme();
+	const [codigo, setCodigo] = useState(0);
+	const [status, setStatus] = useState(true);
+
+	const toggleSwitch = () => setStatus(previousState => !previousState);
+
+    const entityRef = firebase.firestore().collection('entities');
+	//const userID = props.extraData.id;
+	
+	useEffect(() => {
+		const fetchData = async () => {
+			await firebase.database()
+			.ref(`/item/${(keyParam ? keyParam : 0)}`)
+			.on('value', snapshot => {
+				var childData = snapshot.val();
+				console.log(keyParam);
+				console.log(childData);
+				if(childData)
+				{
+					setCodigo(childData.codigo);
+					setStatus(childData.status);
+				}
+			});
+		};
+
+		fetchData();
+	  }, []);
+
 	return (
 		<Layout>
 		<TopNav
@@ -67,8 +90,7 @@ const styles = StyleSheet.create({
 			}
 		  }}
 		/>
-			<View style={styles.container}>
-				
+			<View style={styles.container}>			
 				<Image
 				resizeMode="contain"
 				style={{
@@ -79,22 +101,23 @@ const styles = StyleSheet.create({
 				}}
 				source={require("../../assets/scan_qrcode.png")}/>
 			</View>
-			
-			<View>
+			<View style={styles.field}>
+					<Text>Código:</Text>
+					<TextInput value={codigo}></TextInput>
+				</View>
 			<Button
 				style={{ margin: 10, marginTop: -10, marginBottom: 15,
 					justifyContent: "end" }}
-				text="Digitar código"
+				text="Buscar pelo código"
 				type="outline"
+				status="warning"
 			/>
-
 			<Button
 				style={{ margin: 10, marginTop: -10, 
 					justifyContent: "end" }}
 				text="Ler QRCode"
 				type="outline"
 			/>
-			</View>
 		</Layout>
 	);
 }

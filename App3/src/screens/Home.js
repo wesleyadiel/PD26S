@@ -61,6 +61,7 @@ export default function ({ navigation }) {
 			        </View>
             <Button
               style={{ marginTop: 5 }}
+              size="md"
               text="Itens"
               onPress={() => { 
                 navigation.navigate("ItensScreen");
@@ -68,6 +69,7 @@ export default function ({ navigation }) {
             />
             <Button
               text="Inutilizar Item"
+              size="md"
               onPress={() => {
                 navigation.navigate("InutilizarItemScreen");
               }}
@@ -78,6 +80,7 @@ export default function ({ navigation }) {
           
             <Button
               text="Lançar Item"
+              size="md"
               onPress={() => {
                 navigation.navigate("LancarItemScreen");
               }}
@@ -87,6 +90,7 @@ export default function ({ navigation }) {
             />
             <Button
               text="Estoque"
+              size="md"
               onPress={() => {
                 navigation.navigate("EstoqueItemScreen");
               }}
