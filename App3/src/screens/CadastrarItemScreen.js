@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
 	const [numeroSerie, setNumeroSerie] = useState('');
 	const [dtCompra, setDtCompra] = useState(new Date());
 	const [dtGarantia, setDtGarantia] = useState(new Date());
+	const [categoria, setCategoria] = useState('');
 	const [setor, setSetor] = useState('');
 
     const entityRef = firebase.firestore().collection('entities');
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
 				setNumeroSerie('');
 				dtCompra('');
 				dtGarantia('');
+				setCategoria('');
 			
 				return;
 			}
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
 				alert("Preencha os dados!");
 				return;
 			}
-			console.log(keyParam);
+			
 			firebase.database().ref().child(`/item/${keyParam}`).update({
 				codigo: codigo,
 				descricao: descricao,
@@ -118,27 +120,7 @@ const styles = StyleSheet.create({
 				dtGarantia: dtGarantia,
 				dtCompra: dtCompra
 			});
-/*
-			// A post entry.
-			var postData = {
-				codigo: codigo,
-				descricao: descricao,
-				marca: marca,
-				numeroSerie: numeroSerie,
-				dtGarantia: dtGarantia,
-				dtCompra: dtCompra
-			};
 
-  // Get a key for a new Post.
-  var newPostKey = firebase.database().ref().child('posts').push().key;
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-
-  return firebase.database().ref().update(updates);*/
-			
 			alert("Edição realizada com sucesso!")
 			setCodigo('');
 			setDescricao('');
@@ -190,6 +172,15 @@ const styles = StyleSheet.create({
 					<Text>Nº De Serie</Text>
 					<TextInput value={numeroSerie} onChangeText={(texto) => setNumeroSerie(texto)}></TextInput>
 				</View>
+				<View style={styles.field}>
+					<Text>Categoria</Text>
+					<TextInput value={categoria} onChangeText={(texto) => setCategoria(texto)}></TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Marca</Text>
+					<TextInput value={marca} onChangeText={(texto) => setMarca(texto)}></TextInput>
+				</View>
+
 				<View>
 					<Text style={styles.field}>Data da compra</Text>
 					<DatePicker
@@ -241,11 +232,7 @@ const styles = StyleSheet.create({
 							onDateChange={(date) => {setDtGarantia(date)}}
 						/>
 				</View>
-				<View style={styles.field}>
-					<Text>Marca</Text>
-					<TextInput value={marca} onChangeText={(texto) => setMarca(texto)}></TextInput>
-				</View>
-
+		
 
 			</View>
 			
