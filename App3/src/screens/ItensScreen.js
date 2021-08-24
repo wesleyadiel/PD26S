@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useEffect } from "react";
 import { View, Linking, Image, FlatList, StyleSheet, Text } from "react-native";
 import * as firebase from "firebase";
 import {
@@ -37,6 +37,29 @@ const styles = StyleSheet.create({
 
   export default function ({ navigation }) {
 	const { isDarkmode, setTheme } = useTheme();
+	const items = [];
+	
+	useEffect(async () => {
+		let itens = await firebase.database().ref('item');
+		itens.once('value', (snapshot) => {
+			snapshot.forEach((childSnapshot) => {
+			  var childKey = childSnapshot.key;
+			  var childData = childSnapshot.val();
+			  itens.push({key:childData.codigo, descricao:childData.descricao});
+			  // ...
+			});
+		  });
+		itens.on('value', querySnapShot => {
+			let data = querySnapShot.val() ? querySnapShot.val() : {};
+			let itemsData = {...data};
+			console.log(itemsData);
+			/*itemsData.forEach(element => {
+				console.log(element);
+				itens.push({key:element.codigo, descricao:element.descricao});
+			});*/
+		  });
+	});
+
 	return (
 		<Layout>
 		<TopNav
@@ -67,14 +90,7 @@ const styles = StyleSheet.create({
 				style={styles.container}
 			>
 			<FlatList
-				data={[
-					{key: 1, descricao: 'Projetor'},
-					{key: 2, descricao: 'Cadeira Aluno'},
-					{key: 3, descricao: 'Carteira Aluno'},
-					{key: 4, descricao: 'Mesa Professor'},
-					{key: 5, descricao: 'Freezer'},
-					{key: 6, descricao: 'Geladeira'},
-					]}
+				data={items}
 				renderItem={({item}) =>
 				<View>
 						<Text style={styles.item} onPress={() => {navigation.navigate("CadastrarItemScreen", {codigo: item.key, descricao: item.descricao});}}>
