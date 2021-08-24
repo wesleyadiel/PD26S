@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Linking, Image, FlatList, StyleSheet, Text, Alert} from "react-native";
 import * as firebase from "firebase";
 import {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   });
   
   export default function ({ route, navigation }) {
-	const { codigoParam, descricaoParam } = route.params;
+	const { keyParam, codigoParam, descricaoParam } = route.params;
 
 	const { isDarkmode, setTheme } = useTheme();
 	const [codigo, setCodigo] = useState(0);
@@ -47,35 +47,106 @@ const styles = StyleSheet.create({
 	const [setor, setSetor] = useState('');
 
     const entityRef = firebase.firestore().collection('entities');
-    //const userID = props.extraData.id;
+	//const userID = props.extraData.id;
+	
+	useEffect(() => {
+		const fetchData = async () => {
+			await firebase.database()
+			.ref(`/item/${(keyParam ? keyParam : 0)}`)
+			.on('value', snapshot => {
+				var childData = snapshot.val();
+				console.log(keyParam);
+				console.log(childData);
+				if(childData)
+				{
+					setCodigo(childData.codigo);
+					setDescricao(childData.descricao);
+					setMarca(childData.marca);
+					setNumeroSerie(childData.numeroSerie);
+					setDtCompra(childData.dtCompra ? childData.dtCompra : new Date());
+					setDtGarantia(childData.dtGarantia ? childData.dtGarantia : new Date());
+				}
+			});
+		};
+
+		fetchData();
+	  }, []);
 
 	async function cadastrarItem(){
-		if (codigo!== '' & descricao !== ''){
-		  let usuariosRef = await firebase.database().ref('item');
-		  let key = usuariosRef.push().key;
-		  
-		  usuariosRef.child(key).set({
-			codigo: codigo,
-			descricao: descricao,
-			marca: marca,
-			numeroSerie: numeroSerie,
-			dtGarantia: dtGarantia,
-			dtCompra: dtCompra
-		  });
-	
-		  alert("Cadastro realizado com sucesso!")
-		  setCodigo('');
-		  setDescricao('');
-		  setMarca('');
-		  setNumeroSerie('');
-		  dtCompra('');
-		  dtGarantia('');
-	
-		  return;
+		if (!keyParam || keyParam == undefined || keyParam == '')
+		{
+			if (codigo!== '' & descricao !== '')
+			{
+				let usuariosRef = await firebase.database().ref('item');
+				let key = usuariosRef.push().key;
+				
+				usuariosRef.child(key).set({
+					codigo: codigo,
+					descricao: descricao,
+					marca: marca,
+					numeroSerie: numeroSerie,
+					dtGarantia: dtGarantia,
+					dtCompra: dtCompra
+				});
+			
+				alert("Cadastro realizado com sucesso!")
+				setCodigo('');
+				setDescricao('');
+				setMarca('');
+				setNumeroSerie('');
+				dtCompra('');
+				dtGarantia('');
+			
+				return;
+			}
+		
+			alert("Preencha os dados!");
 		}
-	
-		alert("Preencha os dados!")
-	
+		else
+		{
+			if (!codigo || codigo == '' || !descricao || descricao == '')
+			{
+				alert("Preencha os dados!");
+				return;
+			}
+			console.log(keyParam);
+			firebase.database().ref().child(`/item/${keyParam}`).update({
+				codigo: codigo,
+				descricao: descricao,
+				marca: marca,
+				numeroSerie: numeroSerie,
+				dtGarantia: dtGarantia,
+				dtCompra: dtCompra
+			});
+/*
+			// A post entry.
+			var postData = {
+				codigo: codigo,
+				descricao: descricao,
+				marca: marca,
+				numeroSerie: numeroSerie,
+				dtGarantia: dtGarantia,
+				dtCompra: dtCompra
+			};
+
+  // Get a key for a new Post.
+  var newPostKey = firebase.database().ref().child('posts').push().key;
+
+  // Write the new post's data simultaneously in the posts list and the user's post list.
+  var updates = {};
+  updates['/posts/' + newPostKey] = postData;
+  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+  return firebase.database().ref().update(updates);*/
+			
+			alert("Edição realizada com sucesso!")
+			setCodigo('');
+			setDescricao('');
+			setMarca('');
+			setNumeroSerie('');
+			setDtCompra('');
+			setDtGarantia('');
+		}
 	  }
 
 	return (

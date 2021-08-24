@@ -41,6 +41,22 @@ const styles = StyleSheet.create({
 	const [atualizarLista, setAtualizarLista] = useState(false);
 	const [items, setItems] = useState([]);
 
+	//Tentei colocar para atualizar os dados da lista quando voltasse a tela mas nao deu certo
+	const atualizarDados = async () => {
+		setAtualizarLista(false);
+		let aux = [];
+		let itens = await firebase.database().ref('item');
+		itens.once('value', (snapshot) => {
+			snapshot.forEach((childSnapshot) => {
+				var childKey = childSnapshot.key;
+				var childData = childSnapshot.val();
+				aux.push({key: childSnapshot.key, codigo: childData.codigo, descricao: childData.descricao});
+				setAtualizarLista(true);
+			});
+		});
+		setItems(aux);
+	}
+
 	useEffect(() => {
 		const fetchData = async () => {
 			let aux = [];
@@ -49,7 +65,7 @@ const styles = StyleSheet.create({
 				snapshot.forEach((childSnapshot) => {
 					var childKey = childSnapshot.key;
 					var childData = childSnapshot.val();
-					aux.push({codigo: childData.codigo, descricao: childData.descricao});
+					aux.push({key: childSnapshot.key, codigo: childData.codigo, descricao: childData.descricao});
 					setAtualizarLista(true);
 				});
 			});
@@ -94,7 +110,10 @@ const styles = StyleSheet.create({
 				refreshing={atualizarLista}
 				renderItem={({item}) =>
 				<View>
-						<Text style={styles.item} onPress={() => {navigation.navigate("CadastrarItemScreen", {codigo: item.codigo, descricao: item.descricao});}}>
+						<Text style={styles.item} onPress={async () => { 
+																await navigation.navigate("CadastrarItemScreen", {keyParam: item.key, codigoParam: item.codigo, descricaoParam: item.descricao});
+																atualizarDados();
+																}}>
 							{item.codigo} - {item.descricao}
 		  				</Text>
 				</View>}
@@ -102,8 +121,9 @@ const styles = StyleSheet.create({
             <Button
               style={{ margin: 10 }}
               text="Cadastrar Item"
-              onPress={() => { 
-                navigation.navigate("CadastrarItemScreen", {codigo:'' , descricao:''});
+              onPress={async () => { 
+				await navigation.navigate("CadastrarItemScreen", {codigo:'' , descricao:''});
+				atualizarDados();
                }}
             />
 			</View>
