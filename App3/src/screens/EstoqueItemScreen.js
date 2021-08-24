@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useEffect }  from "react";
 import { View, Linking, Image, FlatList, StyleSheet, Text } from "react-native";
 import * as firebase from "firebase";
 import {
@@ -11,6 +11,7 @@ import {
   themeColor
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,6 +38,43 @@ const styles = StyleSheet.create({
 
   export default function ({ navigation }) {
 	const { isDarkmode, setTheme } = useTheme();
+	const [atualizarLista, setAtualizarLista] = useState(false);
+	const [items, setItems] = useState([]);
+
+	//Tentei colocar para atualizar os dados da lista quando voltasse a tela mas nao deu certo
+	const atualizarDados = async () => {
+		setAtualizarLista(false);
+		let aux = [];
+		let itens = await firebase.database().ref('item');
+		itens.once('value', (snapshot) => {
+			snapshot.forEach((childSnapshot) => {
+				var childKey = childSnapshot.key;
+				var childData = childSnapshot.val();
+				aux.push({key: childSnapshot.key, codigo: childData.codigo, descricao: childData.descricao, qtdEstoque: childData.qtdEstoque});
+				setAtualizarLista(true);
+			});
+		});
+		setItems(aux);
+	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			let aux = [];
+			let itens = await firebase.database().ref('item');
+			itens.once('value', (snapshot) => {
+				snapshot.forEach((childSnapshot) => {
+					var childKey = childSnapshot.key;
+					var childData = childSnapshot.val();
+					aux.push({key: childSnapshot.key, codigo: childData.codigo, descricao: childData.descricao, qtdEstoque: childData.qtdEstoque});
+					setAtualizarLista(true);
+				});
+			});
+		  	setItems(aux);
+		};
+
+		fetchData();
+	  }, []);
+
 	return (
 		<Layout>
 		<TopNav
@@ -67,35 +105,35 @@ const styles = StyleSheet.create({
 				style={styles.container}
 			>
 			<FlatList
-				data={[
-					{key: 1, descricao: 'Projetor', qtdEstoque: 45},
-					{key: 2, descricao: 'Cadeira Aluno', qtdEstoque: 1200},
-					{key: 3, descricao: 'Carteira Aluno', qtdEstoque: 1149},
-					{key: 4, descricao: 'Mesa Professor', qtdEstoque: 225},
-					{key: 5, descricao: 'Freezer', qtdEstoque: 9},
-					{key: 6, descricao: 'Geladeira', qtdEstoque: 14},
-					]}
+			name="list"
+				data={items}
+				refreshing={atualizarLista}
 				renderItem={({item}) =>
 				<View>
-						<Text style={styles.item}>
-							{item.key} - {item.descricao} - Qtd. Estoque: {item.qtdEstoque.toFixed(3)}
+						<Text style={styles.item} onPress={async () => { 
+																await navigation.navigate("CadastrarItemScreen", {keyParam: item.key, codigoParam: item.codigo, descricaoParam: item.descricao, qtdEstoqueParam: item.qtdEstoque });
+																atualizarDados();
+																}}>
+							Cod: {item.codigo} | Nome: {item.descricao} | Qtd: {item.qtdEstoque}
 		  				</Text>
 				</View>}
 			/>
-			
             <Button
-              style={{ marginLeft:10, marginRight:10 }}
-              text="Lançar Item"
-              onPress={() => { 
-                navigation.navigate("LancarItemScreen");
+              style={{ margin: 5 }}
+              text="Cadastrar Item"
+              onPress={async () => { 
+				await navigation.navigate("CadastrarItemScreen", {codigo:'' , descricao:''});
+				atualizarDados();
                }}
             />
 
-            <Button
-              style={{ margin: 10 }}
+<Button
+              style={{ margin: 5 }}
               text="Inutilizar Item"
-              onPress={() => { 
-                navigation.navigate("InutilizarItemScreen");
+			  status="warning"
+              onPress={async () => { 
+				await navigation.navigate("InutilizarItemScreen", {codigo:'' , descricao:''});
+				atualizarDados();
                }}
             />
 			</View>

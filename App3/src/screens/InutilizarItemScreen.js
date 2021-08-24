@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import { View, Linking, Image, FlatList, StyleSheet, Text, Alert, Switch} from "react-native";
+import React, { Component } from "react";
+import { View, Linking, Image, FlatList, StyleSheet, Text, Alert } from "react-native";
 import * as firebase from "firebase";
 import {
   Layout,
@@ -8,9 +8,10 @@ import {
   Section,
   SectionContent,
   useTheme,
-  themeColor, TextInput, Picker
+  themeColor, TextInput
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const styles = StyleSheet.create({
@@ -23,46 +24,31 @@ const styles = StyleSheet.create({
 	 flex: 1,
 	},
 	field: {
-	  margin: 10,
 	  fontSize: 22,
 	  height: 44,
 	  borderBottomWidth: 1,
 	  marginLeft: 10,
 	  marginRight: 10,
 	  textAlign: 'left',
+	  marginBottom:40
 	}
   });
   
-  export default function ({ route, navigation }) {
-	const { keyParam, codigoParam, descricaoParam } = route.params;
 
+  export default function ({ navigation })
+  {
+	const { codigo , descricao } = "";
 	const { isDarkmode, setTheme } = useTheme();
-	const [codigo, setCodigo] = useState(0);
-	const [status, setStatus] = useState(true);
 
-	const toggleSwitch = () => setStatus(previousState => !previousState);
+	async function buscarItem()
+	{
+		alert("Buscando item...");
+	}
 
-    const entityRef = firebase.firestore().collection('entities');
-	//const userID = props.extraData.id;
-	
-	useEffect(() => {
-		const fetchData = async () => {
-			await firebase.database()
-			.ref(`/item/${(keyParam ? keyParam : 0)}`)
-			.on('value', snapshot => {
-				var childData = snapshot.val();
-				console.log(keyParam);
-				console.log(childData);
-				if(childData)
-				{
-					setCodigo(childData.codigo);
-					setStatus(childData.status);
-				}
-			});
-		};
-
-		fetchData();
-	  }, []);
+	async function abrirCamera()
+	{
+		alert("Abrindo camera...");
+	}
 
 	return (
 		<Layout>
@@ -74,7 +60,7 @@ const styles = StyleSheet.create({
 			  color={isDarkmode ? themeColor.white100 : themeColor.dark}
 			  onPress={() => { navigation.pop() }}
 			/>}
-		  middleContent="Cadastro de Item"
+		  middleContent="Inutilizar item"
 		  rightContent={
 			<Ionicons
 			  name={isDarkmode ? "sunny" : "moon"}
@@ -90,7 +76,8 @@ const styles = StyleSheet.create({
 			}
 		  }}
 		/>
-			<View style={styles.container}>			
+			<View style={styles.container}>
+				
 				<Image
 				resizeMode="contain"
 				style={{
@@ -100,24 +87,51 @@ const styles = StyleSheet.create({
 					width: 360,
 				}}
 				source={require("../../assets/scan_qrcode.png")}/>
+				
 			</View>
-			<View style={styles.field}>
-					<Text>Código:</Text>
-					<TextInput value={codigo}></TextInput>
-				</View>
 			<Button
 				style={{ margin: 10, marginTop: -10, marginBottom: 15,
 					justifyContent: "end" }}
-				text="Buscar pelo código"
+				text="Ler QRCode / Código de Barra"
+				type="outline"
+				onPress = {() => {
+						abrirCamera();
+					}
+				}
+			/>
+
+				<View style={styles.field}>
+					<Text>Código do Item: </Text>
+					<TextInput value={codigo}></TextInput>
+				</View>
+			
+			<View>
+			<Button
+				style={{ margin: 10, marginTop: -10, marginBottom: 15,
+					justifyContent: "end" }}
+				text="Buscar item"
+				type="outline"
+				status="info"
+				onPress = {() => {
+						buscarItem();
+					}
+				}
+			/>
+
+<Button
+				style={{ margin: 10, marginTop: -10, marginBottom: 15,
+					justifyContent: "end" }}
+				text="Inutilizar Item"
 				type="outline"
 				status="warning"
+				onPress = {() => {
+						buscarItem();
+					}
+				}
 			/>
-			<Button
-				style={{ margin: 10, marginTop: -10, 
-					justifyContent: "end" }}
-				text="Ler QRCode"
-				type="outline"
-			/>
+
+			
+			</View>
 		</Layout>
 	);
 }
