@@ -4,11 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext } from "../provider/AuthProvider";
 
-// Main
+
 import Home from "../screens/Home";
 import SecondScreen from "../screens/SecondScreen";
 
-// Auth screens
+
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
@@ -20,7 +20,7 @@ import InutilizarItemScreen from "../screens/InutilizarItemScreen";
 import LancarItemScreen from "../screens/LancarItemScreen";
 import EstoqueItemScreen from "../screens/EstoqueItemScreen";
 
-// Better put your these secret keys in .env file
+
 const firebaseConfig = {
   apiKey: "AIzaSyAWybngZhkoluPxnBFI9-Dr0UqBwiT3ajE",
   authDomain: "utfpr-8e0b2.firebaseapp.com",
