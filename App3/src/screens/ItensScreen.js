@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 			  color={isDarkmode ? themeColor.white100 : themeColor.dark}
 			  onPress={() => { navigation.pop() }}
 			/>}
-		  middleContent="Itens"
+		  middleContent="Listagem de Itens"
 		  rightContent={
 			<Ionicons
 			  name={isDarkmode ? "sunny" : "moon"}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 																await navigation.navigate("CadastrarItemScreen", {keyParam: item.key, codigoParam: item.codigo, descricaoParam: item.descricao});
 																atualizarDados();
 																}}>
-							{item.codigo} - {item.descricao}
+							Cod: {item.codigo} | Nome: {item.descricao}
 		  				</Text>
 				</View>}
 			/>
