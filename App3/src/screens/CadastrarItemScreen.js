@@ -49,13 +49,34 @@ const styles = StyleSheet.create({
     const entityRef = firebase.firestore().collection('entities');
     //const userID = props.extraData.id;
 
-	async function salvar()
-	{
-		const item = {
-			idItem: codigo
+	async function cadastrarItem(){
+		if (codigo!== '' & descricao !== ''){
+		  let usuariosRef = await firebase.database().ref('item');
+		  let key = usuariosRef.push().key;
+		  
+		  usuariosRef.child(key).set({
+			codigo: codigo,
+			descricao: descricao,
+			marca: marca,
+			numeroSerie: numeroSerie,
+			dtGarantia: dtGarantia,
+			dtCompra: dtCompra
+		  });
+	
+		  alert("Cadastro realizado com sucesso!")
+		  setCodigo('');
+		  setDescricao('');
+		  setMarca('');
+		  setNumeroSerie('');
+		  dtCompra('');
+		  dtGarantia('');
+	
+		  return;
 		}
-	  alert("Item salvo");
-	}  
+	
+		alert("Preencha os dados!")
+	
+	  }
 
 	return (
 		<Layout>
@@ -88,18 +109,18 @@ const styles = StyleSheet.create({
 			>
 				<View style={styles.field}>
 					<Text>Código</Text>
-					<TextInput editable={false} value={codigo}></TextInput>
+					<TextInput keyboardType="numeric" onChangeText={(texto) => setCodigo(texto)} value={codigo}></TextInput>
 				</View>
 				<View style={styles.field}>
-					<Text>Marca</Text>
-					<TextInput disabled value={marca} onChangeText={(val) => setMarca(val)}></TextInput>
+					<Text>Descricao</Text>
+					<TextInput value={descricao} onChangeText={(texto) => setDescricao(texto)}></TextInput>
 				</View>
 				<View style={styles.field}>
 					<Text>Nº De Serie</Text>
-					<TextInput disabled value={numeroSerie} onChangeText={(val) => setNumeroSerie(val)}></TextInput>
+					<TextInput value={numeroSerie} onChangeText={(texto) => setNumeroSerie(texto)}></TextInput>
 				</View>
-				<View style={styles.field}>
-					<Text>Data da compra</Text>
+				<View>
+					<Text style={styles.field}>Data da compra</Text>
 					<DatePicker
 							style={{width: 200}}
 							date={dtCompra}
@@ -124,28 +145,37 @@ const styles = StyleSheet.create({
 							onDateChange={(date) => {setDtCompra(date)}}
 						/>
 				</View>
-				<View style={styles.field}>
-					<Text>Data final da garantia</Text><DatePicker
+				<View>
+					<Text style={styles.field}>Data final da garantia</Text><DatePicker
+							style={{width: 200}}
 							date={dtGarantia}
 							mode="date"
-							placeholder="Selecione a data de compra"
+							placeholder="Selecione a data da garantia"
 							format="DD-MM-YYYY"
 							minDate="2016-05-01"
 							maxDate="30-12-2999"
 							confirmBtnText="Confirmar"
 							cancelBtnText="Cancelar"
-							
+							customStyles={{
+							dateIcon: {
+								position: 'absolute',
+								left: 0,
+								top: 4,
+								marginLeft: 0
+							},
+							dateInput: {
+								marginLeft: 36
+							}
+							}}
 							onDateChange={(date) => {setDtGarantia(date)}}
 						/>
 				</View>
 				<View style={styles.field}>
-					<Text>Setor</Text>
-					<TextInput disabled value={setor} onChangeText={(val) => setSetor(val)}></TextInput>
+					<Text>Marca</Text>
+					<TextInput value={marca} onChangeText={(texto) => setMarca(texto)}></TextInput>
 				</View>
-				<View style={styles.field}>
-					<Text>Descrição</Text>
-					<TextInput disabled value={descricao} onChangeText={(val) => setDescricao(val)}></TextInput>
-				</View>
+
+
 			</View>
 			
 			<Button
@@ -153,7 +183,7 @@ const styles = StyleSheet.create({
 					justifyContent: "end" }}
 				text="Salvar"
 				onPress={() => { 
-					salvar();
+					cadastrarItem();
 				}}
 				/>
 		</Layout>
