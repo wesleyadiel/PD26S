@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
 	const [numeroSerie, setNumeroSerie] = useState('');
 	const [dtCompra, setDtCompra] = useState(new Date());
 	const [dtGarantia, setDtGarantia] = useState(new Date());
+	const [categoria, setCategoria] = useState('');
 	const [setor, setSetor] = useState('');
 
     const entityRef = firebase.firestore().collection('entities');
@@ -60,7 +61,8 @@ const styles = StyleSheet.create({
 			marca: marca,
 			numeroSerie: numeroSerie,
 			dtGarantia: dtGarantia,
-			dtCompra: dtCompra
+			dtCompra: dtCompra,
+			categoria: categoria
 		  });
 	
 		  alert("Cadastro realizado com sucesso!")
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
 		  setNumeroSerie('');
 		  dtCompra('');
 		  dtGarantia('');
+		  setCategoria('');
 	
 		  return;
 		}
@@ -119,6 +122,15 @@ const styles = StyleSheet.create({
 					<Text>Nº De Serie</Text>
 					<TextInput value={numeroSerie} onChangeText={(texto) => setNumeroSerie(texto)}></TextInput>
 				</View>
+				<View style={styles.field}>
+					<Text>Categoria</Text>
+					<TextInput value={categoria} onChangeText={(texto) => setCategoria(texto)}></TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Marca</Text>
+					<TextInput value={marca} onChangeText={(texto) => setMarca(texto)}></TextInput>
+				</View>
+
 				<View>
 					<Text style={styles.field}>Data da compra</Text>
 					<DatePicker
@@ -170,11 +182,7 @@ const styles = StyleSheet.create({
 							onDateChange={(date) => {setDtGarantia(date)}}
 						/>
 				</View>
-				<View style={styles.field}>
-					<Text>Marca</Text>
-					<TextInput value={marca} onChangeText={(texto) => setMarca(texto)}></TextInput>
-				</View>
-
+		
 
 			</View>
 			
