@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 			  color={isDarkmode ? themeColor.white100 : themeColor.dark}
 			  onPress={() => { navigation.pop() }}
 			/>}
-		  middleContent="Lançamento"
+		  middleContent="Lançamento de item"
 		  rightContent={
 			<Ionicons
 			  name={isDarkmode ? "sunny" : "moon"}
@@ -90,7 +90,11 @@ const styles = StyleSheet.create({
 			</View>
 
 				<View style={styles.field}>
-					<Text>Código do Item</Text>
+					<Text>Código do Item: </Text>
+					<TextInput value={codigo}></TextInput>
+				</View>
+				<View style={styles.field}>
+					<Text>Nome: Carregando..</Text>
 					<TextInput value={codigo}></TextInput>
 				</View>
 			
