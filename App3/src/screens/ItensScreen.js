@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect }  from "react";
 import { View, Linking, Image, FlatList, StyleSheet, Text } from "react-native";
 import * as firebase from "firebase";
 import {
@@ -11,6 +11,7 @@ import {
   themeColor
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,28 +38,26 @@ const styles = StyleSheet.create({
 
   export default function ({ navigation }) {
 	const { isDarkmode, setTheme } = useTheme();
-	const items = [];
-	
-	useEffect(async () => {
-		let itens = await firebase.database().ref('item');
-		itens.once('value', (snapshot) => {
-			snapshot.forEach((childSnapshot) => {
-			  var childKey = childSnapshot.key;
-			  var childData = childSnapshot.val();
-			  itens.push({key:childData.codigo, descricao:childData.descricao});
-			  // ...
+	const [atualizarLista, setAtualizarLista] = useState(false);
+	const [items, setItems] = useState([]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			let aux = [];
+			let itens = await firebase.database().ref('item');
+			itens.once('value', (snapshot) => {
+				snapshot.forEach((childSnapshot) => {
+					var childKey = childSnapshot.key;
+					var childData = childSnapshot.val();
+					aux.push({codigo: childData.codigo, descricao: childData.descricao});
+					setAtualizarLista(true);
+				});
 			});
-		  });
-		itens.on('value', querySnapShot => {
-			let data = querySnapShot.val() ? querySnapShot.val() : {};
-			let itemsData = {...data};
-			console.log(itemsData);
-			/*itemsData.forEach(element => {
-				console.log(element);
-				itens.push({key:element.codigo, descricao:element.descricao});
-			});*/
-		  });
-	});
+		  	setItems(aux);
+		};
+
+		fetchData();
+	  }, []);
 
 	return (
 		<Layout>
@@ -90,11 +89,13 @@ const styles = StyleSheet.create({
 				style={styles.container}
 			>
 			<FlatList
+			name="list"
 				data={items}
+				refreshing={atualizarLista}
 				renderItem={({item}) =>
 				<View>
-						<Text style={styles.item} onPress={() => {navigation.navigate("CadastrarItemScreen", {codigo: item.key, descricao: item.descricao});}}>
-							{item.key} - {item.descricao}
+						<Text style={styles.item} onPress={() => {navigation.navigate("CadastrarItemScreen", {codigo: item.codigo, descricao: item.descricao});}}>
+							{item.codigo} - {item.descricao}
 		  				</Text>
 				</View>}
 			/>
