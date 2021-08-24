@@ -99,6 +99,10 @@ const styles = StyleSheet.create({
 			});
 		};
 
+		{
+			alert('Item foi Inutilizado!');
+		}
+
 		fetchData();
 	}
 
@@ -138,7 +142,7 @@ const styles = StyleSheet.create({
 					height: 280,
 					width: 360,
 				}}
-				source={require("../../assets/scan_qrcode.png")}/>
+				source={require("../../assets/scan.png")}/>
 				
 			</View>
 

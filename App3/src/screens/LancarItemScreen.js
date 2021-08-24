@@ -97,6 +97,10 @@ const styles = StyleSheet.create({
 			});
 		};
 
+		{
+			alert('Item foi lançado com sucesso!');
+		}
+
 		fetchData();
 	}
 
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
 					height: 280,
 					width: 360,
 				}}
-				source={require("../../assets/scan_qrcode.png")}/>
+				source={require("../../assets/scan.png")}/>
 			</View>
 
 				<View style={styles.field}>
